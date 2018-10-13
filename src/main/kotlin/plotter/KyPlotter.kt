@@ -1,7 +1,6 @@
-import Model.Drawing
-import Model.Figure
-import Model.Line
-import Model.Plot
+package plotter
+
+import model.*
 import aliceinnets.python.jyplot.JyPlot
 
 class KyPlotter {
@@ -37,6 +36,10 @@ class KyPlotter {
             is Line -> {
                 plot(drawing.x, drawing.y)
             }
+
+            is Histogram -> {
+                hist(drawing.data, drawing.bins)
+            }
         }
     }
 
@@ -48,9 +51,9 @@ class KyPlotter {
             for ((plot, position) in figure.plotList) {
 
                 subplot(
-                    position.gridHeight,
-                    position.gridWidth,
-                    1 + position.column + position.row * position.gridWidth
+                    position.rowCount,
+                    position.columnCount,
+                    1 + position.column + position.row * position.columnCount
                 )
 
                 buildPlot(plot)
