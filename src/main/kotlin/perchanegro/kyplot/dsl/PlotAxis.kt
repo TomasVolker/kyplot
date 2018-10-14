@@ -5,6 +5,9 @@ import perchanegro.kyplot.model.Plot
 fun Plot.Axis.Builder.between(lower: Number, upper: Number) =
     Plot.Axis.Limits.Explicit(lower, upper)
 
+fun Plot.Builder.between(lower: Number, upper: Number) =
+    Plot.Axis.Limits.Explicit(lower, upper)
+
 fun Plot.Axis.Builder.auto() = Plot.Axis.Limits.Auto
 
 fun Plot.Axis.Builder.tickLabels(labels: Iterable<Pair<Number, String>>) {

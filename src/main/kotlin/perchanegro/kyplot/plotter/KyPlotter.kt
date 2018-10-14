@@ -121,14 +121,18 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                     "color" setTo drawing.lineStyle.color.toPythonColor(),
                     "alpha" setTo drawing.lineStyle.alpha,
                     "marker" setTo drawing.markerStyle.type.toPythonText(),
-                    "markersize" setTo drawing.markerStyle.size
+                    "markersize" setTo drawing.markerStyle.size,
+                    "zorder" setTo 3
                 )
             }
             is Histogram -> {
                 hist(
                     drawing.data,
                     drawing.bins,
-                    "label" setTo drawing.label
+                    "label" setTo drawing.label,
+                    "density" setTo drawing.normalized,
+                    "zorder" setTo 3,
+                    "color" setTo drawing.color.toPythonColor()
                 )
             }
             is SpectrumMagnitude -> {
@@ -151,7 +155,8 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                     drawing.y,
                     "marker" setTo drawing.markerStyle.type.toPythonText(),
                     "label" setTo drawing.label,
-                    "color" setTo  drawing.markerStyle.color.toPythonColor()
+                    "color" setTo  drawing.markerStyle.color.toPythonColor(),
+                    "zorder" setTo 3 // To show over the grid
                 )
             }
         }

@@ -1,5 +1,6 @@
 package perchanegro.kyplot.model.drawing
 
+import perchanegro.kyplot.model.Color
 import perchanegro.kyplot.model.LineStyle
 import perchanegro.kyplot.model.MarkerStyle
 import perchanegro.kyplot.model.PlotDsl
@@ -46,21 +47,27 @@ data class Line(
 data class Histogram(
     val data: Iterable<Number>,
     val bins: Int = 10,
-    override val label: String = ""
+    override val label: String = "",
+    val normalized: Boolean = false,
+    val color: Color = Color.Auto
 ): Drawing() {
 
     @PlotDsl
     class Builder(
         var data: Iterable<Number> = emptyList(),
         var bins: Int = 10,
-        var label: String = ""
+        var label: String = "",
+        var normalized: Boolean = false,
+        var color: Color = Color.Auto
     ): Drawing.Builder {
 
         override fun build() =
             Histogram(
                 data = data,
                 bins = bins,
-                label = label
+                label = label,
+                normalized = normalized,
+                color = color
             )
 
     }
