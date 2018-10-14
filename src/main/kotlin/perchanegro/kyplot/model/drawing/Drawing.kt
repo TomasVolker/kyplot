@@ -2,7 +2,7 @@ package perchanegro.kyplot.model.drawing
 
 import perchanegro.kyplot.model.LineStyle
 import perchanegro.kyplot.model.MarkerStyle
-import perchanegro.kyplot.model.PlotDslMarker
+import perchanegro.kyplot.model.PlotDsl
 
 sealed class Drawing {
 
@@ -21,7 +21,7 @@ data class Line(
     val markerStyle: MarkerStyle = MarkerStyle()
 ): Drawing() {
 
-    @PlotDslMarker
+    @PlotDsl
     class Builder(
         var x: Iterable<Number> = emptyList(),
         var y: Iterable<Number> = emptyList(),
@@ -49,7 +49,7 @@ data class Histogram(
     override val label: String = ""
 ): Drawing() {
 
-    @PlotDslMarker
+    @PlotDsl
     class Builder(
         var data: Iterable<Number> = emptyList(),
         var bins: Int = 10,
@@ -73,7 +73,7 @@ data class SpectrumMagnitude(
     override val label: String = ""
 ): Drawing() {
 
-    @PlotDslMarker
+    @PlotDsl
     class Builder(
         var signal: Iterable<Number> = emptyList(),
         var samplingFrequency: Number = 1.0,
@@ -97,7 +97,7 @@ data class SpectrumPhase(
     override val label: String = ""
 ): Drawing() {
 
-    @PlotDslMarker
+    @PlotDsl
     class Builder(
         var signal: Iterable<Number> = emptyList(),
         var samplingFrequency: Number = 1.0,

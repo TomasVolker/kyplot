@@ -7,7 +7,7 @@ data class LineStyle(
     val width: Number = 1.0
 ) {
 
-    @PlotDslMarker
+    @PlotDsl
     class Builder(
         var color: Color = Color.Auto,
         var alpha: Number = 1.0,

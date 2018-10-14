@@ -72,7 +72,7 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                 is Plot.Axis.TickPositions.Explicit -> {
                     xticks(
                         xAxis.tickPositions.tickList.map { it.position },
-                        xAxis.tickPositions.tickList.map { it.label }
+                        xAxis.tickPositions.tickList.map { it.label.toPythonExpression() }
                     )
                 }
             }
@@ -81,7 +81,7 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                 is Plot.Axis.TickPositions.Explicit -> {
                     yticks(
                         yAxis.tickPositions.tickList.map { it.position },
-                        yAxis.tickPositions.tickList.map { it.label }
+                        yAxis.tickPositions.tickList.map { it.label.toPythonExpression() }
                     )
                 }
             }
