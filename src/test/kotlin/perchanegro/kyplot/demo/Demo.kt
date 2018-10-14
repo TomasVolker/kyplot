@@ -20,7 +20,7 @@ fun main() {
     val gaussRandom = List(1000) {
         random.nextGaussian()
     }
-/*
+
     showLine {
 
         x = uniformRandom
@@ -33,7 +33,7 @@ fun main() {
         }
 
     }
-*/
+
     showPlot {
 
         line {

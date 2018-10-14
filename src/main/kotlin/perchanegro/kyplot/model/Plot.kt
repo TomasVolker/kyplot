@@ -11,11 +11,11 @@ data class Plot(
     val grid: Grid = Grid()
 ) {
 
-    @PlotDslMarker
+    @PlotDsl
     class Builder(
         var title: String = "",
-        var xAxis: Axis = Axis(),
-        var yAxis: Axis = Axis(),
+        var xAxis: Axis.Builder = Axis.Builder(),
+        var yAxis: Axis.Builder = Axis.Builder(),
         var drawingList: MutableList<Drawing.Builder> = mutableListOf(),
         var position: PlotPosition.Builder = PlotPosition.Builder(),
         var grid: Grid.Builder = Grid.Builder()
@@ -23,8 +23,8 @@ data class Plot(
 
         fun build() = Plot(
             title = title,
-            xAxis = xAxis,
-            yAxis = yAxis,
+            xAxis = xAxis.build(),
+            yAxis = yAxis.build(),
             drawingList = drawingList.map { it.build() },
             position = position.build(),
             grid = grid.build()
@@ -73,7 +73,7 @@ data class Plot(
         val visible: Boolean = true
     ) {
 
-        @PlotDslMarker
+        @PlotDsl
         class Builder(
             var lineStyle: LineStyle.Builder = LineStyle.Builder(),
             var visible: Boolean = true
