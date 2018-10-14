@@ -145,6 +145,15 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                     "label" setTo drawing.label
                 )
             }
+            is Scatter -> {
+                scatter(
+                    drawing.x,
+                    drawing.y,
+                    "marker" setTo drawing.markerStyle.type.toPythonText(),
+                    "label" setTo drawing.label,
+                    "color" setTo  drawing.markerStyle.color.toPythonColor()
+                )
+            }
         }
     }
 

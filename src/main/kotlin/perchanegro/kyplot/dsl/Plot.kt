@@ -80,7 +80,17 @@ inline fun Plot.Builder.histogram(
     }
 }
 
-
+inline fun Plot.Builder.scatter(
+    x: Iterable<Number> = emptyList(),
+    y: Iterable<Number> = emptyList(),
+    init: Scatter.Builder.()->Unit = {}
+) {
+    drawing(Scatter.Builder()) {
+        this.x = x
+        this.y = y
+        init()
+    }
+}
 
 inline fun showPlot(init: Plot.Builder.()->Unit) {
     showFigure {
