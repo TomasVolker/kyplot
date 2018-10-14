@@ -1,7 +1,4 @@
-import Model.Drawing
-import Model.Figure
-import Model.Line
-import Model.Plot
+import Model.*
 import aliceinnets.python.jyplot.JyPlot
 
 class KyPlotter {
@@ -36,6 +33,12 @@ class KyPlotter {
         when(drawing) {
             is Line -> {
                 plot(drawing.x, drawing.y)
+            }
+            is SpectrumMagnitude -> {
+                magnitude_spectrum(drawing.signal, drawing.samplingFrequency)
+            }
+            is SpectrumPhase -> {
+                phase_spectrum(drawing.signal, drawing.samplingFrequency)
             }
         }
     }

@@ -1,18 +1,33 @@
 package Model
 
-sealed class Drawing {
-}
+sealed class Drawing
 
 data class Line(
     val x: Iterable<Number>,
-    val y: Iterable<Number>
+    val y: Iterable<Number>,
+    val label: String = ""
 ): Drawing()
+
+data class SpectrumMagnitude(
+    val signal: Iterable<Number>,
+    val samplingFrequency: Number = 1.0,
+    val label: String = ""
+): Drawing()
+
+data class SpectrumPhase(
+    val signal: Iterable<Number>,
+    val samplingFrequency: Number = 1.0,
+    val label: String = ""
+): Drawing()
+
+
 
 data class Plot(
     val title: String = "",
     val xAxis: Axis = Axis(),
     val yAxis: Axis = Axis(),
-    val drawingList: List<Drawing> = emptyList()) {
+    val drawingList: List<Drawing> = emptyList()
+) {
 
     data class Axis(
         val label: String = "",
@@ -21,7 +36,10 @@ data class Plot(
 
         sealed class Limits {
             object Auto: Limits()
-            data class Explicit(val min: Number, val max: Number): Limits()
+            data class Explicit(
+                val min: Number,
+                val max: Number
+            ): Limits()
         }
     }
 
