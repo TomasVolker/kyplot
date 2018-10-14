@@ -8,10 +8,6 @@ import perchanegro.kyplot.model.drawing.Line
 import kotlin.random.Random
 import java.util.Random as JavaRandom
 
-var Line.Builder.color: Color
-    get() = lineStyle.color
-    set(value) { lineStyle.color = value }
-
 fun main() {
 
     val random = JavaRandom()
@@ -70,44 +66,6 @@ fun main() {
             }
 
         }
-    }
-/*
-    showPlot {
-        spectrumMagnitude(gaussRandom)
-    }
-
-    showFigure {
-
-        plot {
-
-            position {
-                columnCount = 2
-                column = 0
-            }
-
-            histogram (uniformRandom) {
-                bins = 40
-            }
-
-        }
-
-        plot {
-
-            position {
-                columnCount = 2
-                column = 1
-            }
-
-            title = "Gaussian Random"
-            histogram {
-
-                data = gaussRandom
-                bins = 50
-
-            }
-
-        }
-
     }
 
 }
