@@ -12,13 +12,21 @@ data class Plot(
 
     data class Axis(
         val label: String = "",
-        val limits: Limits = Limits.Auto
+        val limits: Limits = Limits.Auto,
+        val tickPositions: TickPositions = TickPositions.Auto
     ) {
 
         sealed class Limits {
             object Auto: Limits()
             data class Explicit(val min: Number, val max: Number): Limits()
         }
+
+        sealed class TickPositions {
+            object Auto: TickPositions()
+            data class Explicit(val tickList: List<Tick>): TickPositions()
+        }
+
+        data class Tick(val position: Number, val label: String)
     }
 
     data class Grid(val oneThing: Any) {

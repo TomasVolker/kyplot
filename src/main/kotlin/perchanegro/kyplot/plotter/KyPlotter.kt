@@ -1,7 +1,6 @@
 package perchanegro.kyplot.plotter
 
 import aliceinnets.python.Parser
-import aliceinnets.python.PythonCode
 import aliceinnets.python.PythonScriptUtil
 import perchanegro.kyplot.model.*
 import aliceinnets.python.jyplot.JyPlot
@@ -62,6 +61,24 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             when(yAxis.limits) {
                 is Plot.Axis.Limits.Explicit -> {
                     ylim(yAxis.limits.min, yAxis.limits.max)
+                }
+            }
+
+            when(xAxis.tickPositions) {
+                is Plot.Axis.TickPositions.Explicit -> {
+                    xticks(
+                        xAxis.tickPositions.tickList.map { it.position },
+                        xAxis.tickPositions.tickList.map { it.label }
+                    )
+                }
+            }
+
+            when(yAxis.tickPositions) {
+                is Plot.Axis.TickPositions.Explicit -> {
+                    yticks(
+                        yAxis.tickPositions.tickList.map { it.position },
+                        yAxis.tickPositions.tickList.map { it.label }
+                    )
                 }
             }
 

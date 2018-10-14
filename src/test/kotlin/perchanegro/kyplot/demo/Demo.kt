@@ -1,6 +1,8 @@
 package perchanegro.kyplot.demo
 
 import perchanegro.kyplot.dsl.*
+import kotlin.math.PI
+import kotlin.math.sin
 import kotlin.random.Random
 import java.util.Random as JavaRandom
 
@@ -67,6 +69,10 @@ fun main() {
             }
 
         }
+
+    }
+
+    showPlot {
 
     }
 
