@@ -1,4 +1,4 @@
-package model
+package perchanegro.kyplot.model
 
 data class PlotPosition (
     val rowCount: Int = 1,

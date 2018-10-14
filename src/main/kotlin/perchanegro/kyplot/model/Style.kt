@@ -1,8 +1,8 @@
-package Model
+package perchanegro.kyplot.model
 
-import Model.MarkerType.*
-import Model.LineType.*
-import Model.MarkerFillStyle.*
+import perchanegro.kyplot.model.MarkerType.*
+import perchanegro.kyplot.model.LineType.*
+import perchanegro.kyplot.model.MarkerFillStyle.*
 
 enum class LineType {
     SOLID,
