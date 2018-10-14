@@ -92,6 +92,18 @@ inline fun Plot.Builder.scatter(
     }
 }
 
+inline fun Plot.Builder.bar(
+    x: Iterable<Number> = emptyList(),
+    heights: Iterable<Number> = emptyList(),
+    init: Bar.Builder.()->Unit = {}
+) {
+    drawing(Bar.Builder()) {
+        this.x = x
+        this.heights = heights
+        init()
+    }
+}
+
 inline fun showPlot(init: Plot.Builder.()->Unit) {
     showFigure {
         plot(init = init)
