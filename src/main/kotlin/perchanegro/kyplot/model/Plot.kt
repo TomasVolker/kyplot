@@ -7,8 +7,30 @@ data class Plot(
     val xAxis: Axis = Axis(),
     val yAxis: Axis = Axis(),
     val drawingList: List<Drawing> = emptyList(),
-    val position: PlotPosition = PlotPosition()
+    val position: PlotPosition = PlotPosition(),
+    val grid: Grid = Grid()
 ) {
+
+    @PlotDslMarker
+    class Builder(
+        var title: String = "",
+        var xAxis: Axis = Axis(),
+        var yAxis: Axis = Axis(),
+        var drawingList: MutableList<Drawing.Builder> = mutableListOf(),
+        var position: PlotPosition.Builder = PlotPosition.Builder(),
+        var grid: Grid.Builder = Grid.Builder()
+    ) {
+
+        fun build() = Plot(
+            title = title,
+            xAxis = xAxis,
+            yAxis = yAxis,
+            drawingList = drawingList.map { it.build() },
+            position = position.build(),
+            grid = grid.build()
+        )
+
+    }
 
     data class Axis(
         val label: String = "",
@@ -29,26 +51,26 @@ data class Plot(
         data class Tick(val position: Number, val label: String)
     }
 
-    data class Grid(val oneThing: Any) {
-        //TODO
-    }
 
-    @PlotDslMarker
-    class Builder(
-        var title: String = "",
-        var xAxis: Axis = Axis(),
-        var yAxis: Axis = Axis(),
-        var drawingList: MutableList<Drawing.Builder> = mutableListOf(),
-        var position: PlotPosition.Builder = PlotPosition.Builder()
+    data class Grid(
+        val lineStyle: LineStyle = LineStyle(),
+        val visible: Boolean = true
     ) {
 
-        fun build() = Plot(
-            title = title,
-            xAxis = xAxis,
-            yAxis = yAxis,
-            drawingList = drawingList.map { it.build() },
-            position = position.build()
-        )
+        @PlotDslMarker
+        class Builder(
+            var lineStyle: LineStyle.Builder = LineStyle.Builder(),
+            var visible: Boolean = true
+        ) {
+
+            fun build() =
+                Grid(
+                    lineStyle = lineStyle.build(),
+                    visible = visible
+                )
+
+        }
 
     }
+
 }

@@ -4,6 +4,7 @@ import perchanegro.kyplot.dsl.*
 import perchanegro.kyplot.model.Color
 import perchanegro.kyplot.model.LineType
 import perchanegro.kyplot.model.MarkerType
+import perchanegro.kyplot.model.Plot
 import perchanegro.kyplot.model.drawing.Line
 import kotlin.random.Random
 import java.util.Random as JavaRandom
@@ -19,7 +20,7 @@ fun main() {
     val gaussRandom = List(1000) {
         random.nextGaussian()
     }
-
+/*
     showLine {
 
         x = uniformRandom
@@ -32,8 +33,7 @@ fun main() {
         }
 
     }
-
-
+*/
     showPlot {
 
         line {

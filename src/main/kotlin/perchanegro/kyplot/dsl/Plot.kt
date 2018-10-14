@@ -1,11 +1,20 @@
 package perchanegro.kyplot.dsl
 
+import perchanegro.kyplot.model.LineStyle
 import perchanegro.kyplot.model.Plot
 import perchanegro.kyplot.model.PlotPosition
 import perchanegro.kyplot.model.drawing.*
 
 inline fun Plot.Builder.position(init: PlotPosition.Builder.()->Unit) {
     position.apply(init)
+}
+
+inline fun Plot.Builder.grid(init: Plot.Grid.Builder.()->Unit) {
+    grid.apply(init)
+}
+
+inline fun Plot.Grid.Builder.lineStyle(init: LineStyle.Builder.()->Unit) {
+    lineStyle.apply(init)
 }
 
 inline fun <T: Drawing.Builder> Plot.Builder.drawing(

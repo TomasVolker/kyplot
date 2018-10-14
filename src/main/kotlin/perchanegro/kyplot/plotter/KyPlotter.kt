@@ -1,6 +1,7 @@
 package perchanegro.kyplot.plotter
 
 import aliceinnets.python.Parser
+import aliceinnets.python.PythonCode
 import aliceinnets.python.PythonScriptUtil
 import perchanegro.kyplot.model.*
 import aliceinnets.python.jyplot.JyPlot
@@ -86,6 +87,23 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             }
 
             drawingList.forEach { buildDrawing(it) }
+
+
+            if (grid.visible) {
+
+                grid(
+                    "linestyle" setTo grid.lineStyle.type.toPythonText(),
+                    "linewidth" setTo grid.lineStyle.width,
+                    "alpha" setTo grid.lineStyle.alpha
+                )
+
+                if (grid.lineStyle.color !is Color.Auto) {
+                    grid(
+                        "color" setTo grid.lineStyle.color.toPythonColor()
+                    )
+                }
+
+            }
 
         }
 
