@@ -1,13 +1,15 @@
 package perchanegro.kyplot.plotter
 
 import aliceinnets.python.Parser
-import aliceinnets.python.PythonCode
 import aliceinnets.python.PythonScriptUtil
 import perchanegro.kyplot.model.*
 import aliceinnets.python.jyplot.JyPlot
 import perchanegro.kyplot.model.drawing.*
+import perchanegro.kyplot.model.LineType.*
+import perchanegro.kyplot.model.MarkerType.*
+import perchanegro.kyplot.model.MarkerFillStyle.*
 
-object KyplotConfig {
+object KyPlotConfig {
 
     var pythonPath: String
         get() = PythonScriptUtil.getPythonPath()
@@ -77,7 +79,13 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                 plot(
                     drawing.x,
                     drawing.y,
-                    "label" setTo drawing.label
+                    "label" setTo drawing.label,
+                    "linewidth" setTo drawing.lineStyle.width,
+                    "lineStyle" setTo drawing.lineStyle.type.toPythonText(),
+                    "color" setTo drawing.lineStyle.color.toPythonColor(),
+                    "alpha" setTo drawing.lineStyle.alpha,
+                    "marker" setTo drawing.markerStyle.type.toPythonText(),
+                    "markersize" setTo drawing.markerStyle.size
                 )
             }
             is Histogram -> {
@@ -90,14 +98,14 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             is SpectrumMagnitude -> {
                 magnitude_spectrum(
                     drawing.signal,
-                    drawing.samplingFrequency,
+                    "Fs" setTo drawing.samplingFrequency,
                     "label" setTo drawing.label
                 )
             }
             is SpectrumPhase -> {
                 phase_spectrum(
                     drawing.signal,
-                    drawing.samplingFrequency,
+                    "Fs" setTo drawing.samplingFrequency,
                     "label" setTo drawing.label
                 )
             }
@@ -112,4 +120,50 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
 
 }
 
+fun Color.toPythonColor(): List<Number>? = when(this) {
+    is Color.Auto -> null
+    is Color.Explicit -> listOf(red, green, blue)
+}
 
+fun LineType.toPythonText(): String = when(this) {
+    SOLID -> "-"
+    DASHED -> "--"
+    DASH_DOT -> "-."
+    DOTTED -> ":"
+}
+
+fun MarkerType.toPythonText(): String? = when(this) {
+    MarkerType.NONE -> null
+    POINT -> "."
+    PIXEL -> ","
+    CIRCLE -> "o"
+    TRIANGLE_DOWN -> "v"
+    TRIANGLE_UP -> "^"
+    TRIANGLE_LEFT -> "<"
+    TRIANGLE_RIGHT -> ">"
+    TRI_DOWN -> "1"
+    TRI_UP -> "2"
+    TRI_LEFT -> "3"
+    TRI_RIGHT -> "4"
+    SQUARE -> "s"
+    PENTAGON -> "p"
+    STAR -> "*"
+    HEXAGON_1 -> "h"
+    HEXAGON_2 -> "H"
+    PLUS -> "+"
+    X -> "x"
+    X_FILLED -> "X"
+    DIAMOND -> "D"
+    THIN_DIAMOND -> "d"
+    VERTICAL_LINE -> "|"
+    HORIZONTAL_LINE -> "_"
+}
+
+fun MarkerFillStyle.toPythonText(): String = when(this) {
+    MarkerFillStyle.NONE -> "none"
+    FULL -> "full"
+    LEFT -> "left"
+    RIGHT -> "right"
+    BOTTOM -> "bottom"
+    TOP -> "top"
+}
