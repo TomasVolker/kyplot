@@ -6,7 +6,7 @@ data class PlotPosition (
     val row: Int = 0,
     val column: Int = 0
 ) {
-    @PlotDslMarker
+    @PlotDsl
     class Builder(
         var rowCount: Int = 1,
         var columnCount: Int = 1,

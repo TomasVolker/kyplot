@@ -26,26 +26,42 @@ data class Plot(
             data class Explicit(val tickList: List<Tick>): TickPositions()
         }
 
-        data class Tick(val position: Number, val label: String)
+        data class Tick(val position: Number, val label: String = "")
+
+        @PlotDsl
+        class Builder(
+            var label: String = "",
+            var limits: Limits = Limits.Auto,
+            var tickPositions: TickPositions = TickPositions.Auto
+        ) {
+
+            infix fun Number.upTo(upper: Number) = Limits.Explicit(this, upper)
+
+            fun build() = Axis(
+                label = label,
+                limits = limits,
+                tickPositions = tickPositions
+            )
+        }
     }
 
     data class Grid(val oneThing: Any) {
         //TODO
     }
 
-    @PlotDslMarker
+    @PlotDsl
     class Builder(
         var title: String = "",
-        var xAxis: Axis = Axis(),
-        var yAxis: Axis = Axis(),
+        var xAxis: Axis.Builder = Axis.Builder(),
+        var yAxis: Axis.Builder = Axis.Builder(),
         var drawingList: MutableList<Drawing.Builder> = mutableListOf(),
         var position: PlotPosition.Builder = PlotPosition.Builder()
     ) {
 
         fun build() = Plot(
             title = title,
-            xAxis = xAxis,
-            yAxis = yAxis,
+            xAxis = xAxis.build(),
+            yAxis = yAxis.build(),
             drawingList = drawingList.map { it.build() },
             position = position.build()
         )

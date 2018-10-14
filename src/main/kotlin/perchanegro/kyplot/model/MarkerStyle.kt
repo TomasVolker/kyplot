@@ -5,7 +5,7 @@ data class MarkerStyle(
     val size: Number = 1.0
 ) {
 
-    @PlotDslMarker
+    @PlotDsl
     class Builder(
         var type: MarkerType = MarkerType.NONE,
         var size: Number = 1.0

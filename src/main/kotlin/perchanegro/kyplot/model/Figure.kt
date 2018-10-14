@@ -3,13 +3,13 @@ package perchanegro.kyplot.model
 import perchanegro.kyplot.plotter.KyPlot
 
 @DslMarker
-annotation class PlotDslMarker
+annotation class PlotDsl
 
 data class Figure(
     val title: String = "",
     val plotList: List<Plot> = emptyList()
 ) {
-    @PlotDslMarker
+    @PlotDsl
     class Builder(
         var title: String = "",
         var plotList: MutableList<Plot.Builder> = mutableListOf()
