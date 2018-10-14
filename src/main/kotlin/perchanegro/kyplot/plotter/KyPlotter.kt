@@ -67,6 +67,24 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                 }
             }
 
+            when(xAxis.tickPositions) {
+                is Plot.Axis.TickPositions.Explicit -> {
+                    xticks(
+                        xAxis.tickPositions.tickList.map { it.position },
+                        xAxis.tickPositions.tickList.map { it.label }
+                    )
+                }
+            }
+
+            when(yAxis.tickPositions) {
+                is Plot.Axis.TickPositions.Explicit -> {
+                    yticks(
+                        yAxis.tickPositions.tickList.map { it.position },
+                        yAxis.tickPositions.tickList.map { it.label }
+                    )
+                }
+            }
+
             drawingList.forEach { buildDrawing(it) }
 
         }
