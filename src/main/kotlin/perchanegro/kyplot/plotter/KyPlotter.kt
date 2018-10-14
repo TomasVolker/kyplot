@@ -154,6 +154,15 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                     "color" setTo  drawing.markerStyle.color.toPythonColor()
                 )
             }
+            is Bar -> {
+                bar(
+                    drawing.x,
+                    drawing.heights,
+                    "align" setTo drawing.alignment.toPythonText(),
+                    "width" setTo drawing.width,
+                    "color" setTo (drawing.color.toPythonColor() ?: Color.BLUE.toPythonColor())
+                )
+            }
         }
     }
 
@@ -211,4 +220,9 @@ fun MarkerFillStyle.toPythonText(): String = when(this) {
     RIGHT -> "right"
     BOTTOM -> "bottom"
     TOP -> "top"
+}
+
+fun BarAlignment.toPythonText(): String = when(this) {
+    BarAlignment.CENTER -> "center"
+    BarAlignment.EDGE -> "edge"
 }

@@ -2,6 +2,7 @@ package perchanegro.kyplot.dsl
 
 import perchanegro.kyplot.model.drawing.Histogram
 import perchanegro.kyplot.model.drawing.Line
+import perchanegro.kyplot.model.drawing.Scatter
 
 inline fun showHistogram(
     data: Iterable<Number> = emptyList(),
@@ -29,3 +30,19 @@ inline fun showLine(
         )
     }
 }
+
+inline fun showScatter(
+    x: Iterable<Number> = emptyList(),
+    y: Iterable<Number> = emptyList(),
+    init: Scatter.Builder.()->Unit = {}
+) {
+    showPlot {
+        scatter(
+            x = x,
+            y = y,
+            init = init
+        )
+    }
+}
+
+

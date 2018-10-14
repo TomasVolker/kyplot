@@ -1,8 +1,6 @@
 package perchanegro.kyplot.model.drawing
 
-import perchanegro.kyplot.model.LineStyle
-import perchanegro.kyplot.model.MarkerStyle
-import perchanegro.kyplot.model.PlotDsl
+import perchanegro.kyplot.model.*
 
 sealed class Drawing {
 
@@ -136,6 +134,39 @@ data class Scatter(
                 y = y,
                 label = label,
                 markerStyle = markerStyle.build()
+            )
+
+    }
+
+}
+
+data class Bar(
+    val x: Iterable<Number>,
+    val heights: Iterable<Number>,
+    val width: Double,
+    val alignment: BarAlignment,
+    val color: Color,
+    override val label: String = ""
+): Drawing() {
+
+    @PlotDsl
+    class Builder(
+        var x: Iterable<Number> = emptyList(),
+        var heights: Iterable<Number> = emptyList(),
+        var width: Double = 0.8,
+        var alignment: BarAlignment = BarAlignment.CENTER,
+        var color: Color = Color.Auto,
+        var label: String = ""
+    ): Drawing.Builder {
+
+        override fun build() =
+            Bar(
+                x = x,
+                heights = heights,
+                width = width,
+                alignment = alignment,
+                color = color,
+                label = label
             )
 
     }

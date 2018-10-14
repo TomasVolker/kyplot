@@ -46,3 +46,8 @@ enum class MarkerFillStyle {
     BOTTOM,
     TOP
 }
+
+enum class BarAlignment {
+    CENTER,
+    EDGE
+}

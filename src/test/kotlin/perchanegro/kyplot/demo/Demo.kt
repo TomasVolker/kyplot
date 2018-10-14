@@ -1,6 +1,7 @@
 package perchanegro.kyplot.demo
 
 import perchanegro.kyplot.dsl.*
+import perchanegro.kyplot.model.BarAlignment
 import perchanegro.kyplot.model.Color
 import perchanegro.kyplot.model.MarkerType
 import perchanegro.kyplot.model.Plot
@@ -95,13 +96,28 @@ fun main() {
 
     }*/
 
-    showPlot {
-        scatter(x = gaussRandom, y = uniformRandom) {
-            markerStyle.type = MarkerType.PENTAGON
-            markerStyle.color = Color.GREEN
-        }
+    showScatter (x = gaussRandom, y = uniformRandom) {
+        markerStyle.type = MarkerType.PENTAGON
+        markerStyle.color = Color.GREEN
     }
 
+    val x = (1..10).toList()
+    val y = gaussRandom.take(10)
 
+    showPlot {
+        bar(x = x, heights = y) {
+            alignment = BarAlignment.EDGE
+            width = 0.5
+        }
+        xAxis {
+            tickLabels(
+                1 to "Jan",
+                2 to "Feb"
+            )
+        }
+        grid {
+            visible = false
+        }
+    }
 
 }
