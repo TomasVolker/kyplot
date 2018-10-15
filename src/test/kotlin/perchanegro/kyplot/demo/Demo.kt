@@ -26,6 +26,8 @@ fun main() {
 
     showPlot {
 
+        title = "Samples"
+
         xAxis.limits = between(-5, 5)
 
         yAxis {
@@ -38,7 +40,7 @@ fun main() {
         }
     }
 
-    showHistogram {
+    showHistogram(title = "Absolute value") {
         data = abs
         bins = 40
     }

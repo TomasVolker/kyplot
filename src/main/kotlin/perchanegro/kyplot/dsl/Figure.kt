@@ -11,8 +11,11 @@ inline fun showFigure(init: Figure.Builder.()->Unit) {
         .show()
 }
 
-inline fun Figure.Builder.plot(init: Plot.Builder.()->Unit) {
+inline fun Figure.Builder.plot(title: String = "", init: Plot.Builder.()->Unit) {
     plotList.add(
-        Plot.Builder().apply(init)
+        Plot.Builder().apply {
+            this.title = title
+            init()
+        }
     )
 }

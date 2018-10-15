@@ -104,8 +104,8 @@ inline fun Plot.Builder.bar(
     }
 }
 
-inline fun showPlot(init: Plot.Builder.()->Unit) {
+inline fun showPlot(title: String = "", init: Plot.Builder.()->Unit) {
     showFigure {
-        plot(init = init)
+        plot(title, init)
     }
 }
