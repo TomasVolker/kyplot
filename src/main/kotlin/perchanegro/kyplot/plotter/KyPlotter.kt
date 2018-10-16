@@ -1,7 +1,6 @@
 package perchanegro.kyplot.plotter
 
 import aliceinnets.python.Parser
-import aliceinnets.python.PythonCode
 import aliceinnets.python.PythonScriptUtil
 import perchanegro.kyplot.model.*
 import aliceinnets.python.jyplot.JyPlot
@@ -56,20 +55,23 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             xlabel(xAxis.label)
             ylabel(yAxis.label)
 
+            xscale(xAxis.scale.toPythonText())
+            yscale(yAxis.scale.toPythonText())
+
             when(xAxis.limits) {
-                is Plot.Axis.Limits.Explicit -> {
+                is Axis.Limits.Explicit -> {
                     xlim(xAxis.limits.min, xAxis.limits.max)
                 }
             }
 
             when(yAxis.limits) {
-                is Plot.Axis.Limits.Explicit -> {
+                is Axis.Limits.Explicit -> {
                     ylim(yAxis.limits.min, yAxis.limits.max)
                 }
             }
 
             when(xAxis.tickPositions) {
-                is Plot.Axis.TickPositions.Explicit -> {
+                is Axis.TickPositions.Explicit -> {
                     xticks(
                         xAxis.tickPositions.tickList.map { it.position },
                         xAxis.tickPositions.tickList.map { it.label.toPythonExpression() }
@@ -78,7 +80,7 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             }
 
             when(yAxis.tickPositions) {
-                is Plot.Axis.TickPositions.Explicit -> {
+                is Axis.TickPositions.Explicit -> {
                     yticks(
                         yAxis.tickPositions.tickList.map { it.position },
                         yAxis.tickPositions.tickList.map { it.label.toPythonExpression() }
@@ -155,6 +157,7 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                     drawing.y,
                     "marker" setTo drawing.markerStyle.type.toPythonText(),
                     "label" setTo drawing.label,
+                    "alpha" setTo drawing.markerStyle.alpha,
                     "color" setTo  drawing.markerStyle.color.toPythonColor(),
                     "zorder" setTo 3 // To show over the grid
                 )
@@ -177,6 +180,11 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
     private fun Any?.toPythonExpression(): String =
         Parser.toPythonExpression(this)
 
+}
+
+fun Axis.Scale.toPythonText(): String = when(this) {
+    Axis.Scale.LINEAR -> "linear"
+    Axis.Scale.LOGARITHMIC -> "log"
 }
 
 fun Color.toPythonColor(): List<Number>? = when(this) {

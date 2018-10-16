@@ -30,13 +30,12 @@ fun main() {
 
         xAxis.limits = between(-5, 5)
 
-        yAxis {
-            limits = between(-5, 5)
-        }
+        yAxis.limits = between(-5, 5)
 
         scatter(x = xs, y = ys) {
             markerStyle.type = MarkerType.X
             markerStyle.color = Color.RED
+            markerStyle.alpha = 0.5
         }
     }
 
@@ -56,7 +55,6 @@ fun main() {
             bins = 40
             normalized = true
             color = Color.BLUE
-
         }
 
         line {

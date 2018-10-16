@@ -1,20 +1,17 @@
 package perchanegro.kyplot.dsl
 
-import perchanegro.kyplot.model.LineStyle
-import perchanegro.kyplot.model.Plot
-import perchanegro.kyplot.model.PlotPosition
+import perchanegro.kyplot.model.*
 import perchanegro.kyplot.model.drawing.*
-import javax.print.attribute.standard.NumberUp
 
 inline fun Plot.Builder.position(init: PlotPosition.Builder.()->Unit) {
     position.apply(init)
 }
 
-inline fun Plot.Builder.xAxis(init: Plot.Axis.Builder.()->Unit) {
+inline fun Plot.Builder.xAxis(init: Axis.Builder.()->Unit) {
     xAxis.apply(init)
 }
 
-inline fun Plot.Builder.yAxis(init: Plot.Axis.Builder.()->Unit) {
+inline fun Plot.Builder.yAxis(init: Axis.Builder.()->Unit) {
     yAxis.apply(init)
 }
 
