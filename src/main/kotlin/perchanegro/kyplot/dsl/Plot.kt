@@ -19,6 +19,10 @@ inline fun Plot.Builder.grid(init: Plot.Grid.Builder.()->Unit) {
     grid.apply(init)
 }
 
+inline fun Plot.Builder.legend(init: Legend.Builder.()->Unit) {
+    legend.apply(init)
+}
+
 inline fun Plot.Grid.Builder.lineStyle(init: LineStyle.Builder.()->Unit) {
     lineStyle.apply(init)
 }

@@ -6,6 +6,7 @@ import perchanegro.kyplot.dsl.showLine
 import perchanegro.kyplot.dsl.showPlot
 import perchanegro.kyplot.model.Axis
 import perchanegro.kyplot.model.Color
+import perchanegro.kyplot.model.Legend
 import java.io.File
 import kotlin.math.*
 
@@ -51,9 +52,15 @@ fun main() {
 
         title = "Raw data with tendency"
 
-        line(time, logData)
+        line(time, logData) {
+            label = "Log of data"
+        }
 
-        line(time, tendency(time))
+        line(time, tendency(time)) {
+            label = "Tendency"
+        }
+
+        legend.visible = true
 
     }
 
@@ -97,15 +104,18 @@ fun main() {
         title = "Samples within year and cycle estimation"
 
         scatter(timeInYear, dataWithoutTendency) {
+            label = "Samples"
             markerStyle {
                 alpha = 0.6
             }
         }
 
         line(modSpace, cycle(modSpace)) {
-            color = Color.BLACK
+            label = "Regression"
+            color = Color.RED
         }
 
+        legend.visible = true
 
     }
 

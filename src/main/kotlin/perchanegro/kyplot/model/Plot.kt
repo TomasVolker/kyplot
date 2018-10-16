@@ -8,7 +8,8 @@ data class Plot(
     val yAxis: Axis = Axis(),
     val drawingList: List<Drawing> = emptyList(),
     val position: PlotPosition = PlotPosition(),
-    val grid: Grid = Grid()
+    val grid: Grid = Grid(),
+    val legend: Legend = Legend()
 ) {
 
     @PlotDsl
@@ -18,7 +19,8 @@ data class Plot(
         var yAxis: Axis.Builder = Axis.Builder(),
         var drawingList: MutableList<Drawing.Builder> = mutableListOf(),
         var position: PlotPosition.Builder = PlotPosition.Builder(),
-        var grid: Grid.Builder = Grid.Builder()
+        var grid: Grid.Builder = Grid.Builder(),
+        var legend: Legend.Builder = Legend.Builder()
     ) {
 
         fun build() = Plot(
@@ -27,7 +29,8 @@ data class Plot(
             yAxis = yAxis.build(),
             drawingList = drawingList.map { it.build() },
             position = position.build(),
-            grid = grid.build()
+            grid = grid.build(),
+            legend = legend.build()
         )
 
     }

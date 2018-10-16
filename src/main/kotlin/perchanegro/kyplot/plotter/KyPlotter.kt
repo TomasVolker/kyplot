@@ -8,6 +8,7 @@ import perchanegro.kyplot.model.drawing.*
 import perchanegro.kyplot.model.LineType.*
 import perchanegro.kyplot.model.MarkerType.*
 import perchanegro.kyplot.model.MarkerFillStyle.*
+import perchanegro.kyplot.model.Legend.Position.*
 
 object KyPlotConfig {
 
@@ -107,6 +108,10 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
 
             }
 
+            if (legend.visible) {
+                legend("loc" setTo legend.position.toPythonString())
+            }
+
         }
 
     }
@@ -140,13 +145,14 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             is SpectrumMagnitude -> {
                 magnitude_spectrum(
                     drawing.signal,
-                    "Fs" setTo drawing.samplingFrequency,
-                    "label" setTo drawing.label
+                    "label" setTo drawing.label,
+                    "Fs" setTo drawing.samplingFrequency
                 )
             }
             is SpectrumPhase -> {
                 phase_spectrum(
                     drawing.signal,
+                    "label" setTo drawing.label,
                     "Fs" setTo drawing.samplingFrequency,
                     "label" setTo drawing.label
                 )
@@ -166,6 +172,7 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                 bar(
                     drawing.x,
                     drawing.heights,
+                    "label" setTo drawing.label,
                     "align" setTo drawing.alignment.toPythonText(),
                     "width" setTo drawing.width,
                     "color" setTo (drawing.color.toPythonColor() ?: Color.BLUE.toPythonColor())
@@ -175,6 +182,7 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                 stem(
                     drawing.x,
                     drawing.y,
+                    "label" setTo drawing.label,
                     "linefmt" setTo (drawing.lineStyle.color.toPythonString() + drawing.lineStyle.type.toPythonText()),
                     "markerfmt" setTo ((drawing.markerStyle.type.toPythonText() ?: ".") +
                             drawing.markerStyle.color.toPythonString())
@@ -239,7 +247,7 @@ fun MarkerFillStyle.toPythonText(): String = when(this) {
     MarkerFillStyle.NONE -> "none"
     FULL -> "full"
     LEFT -> "left"
-    RIGHT -> "right"
+    MarkerFillStyle.RIGHT -> "right"
     BOTTOM -> "bottom"
     TOP -> "top"
 }
@@ -262,3 +270,16 @@ fun Color.toPythonString(): String? =
         else -> null
     }
 
+fun Legend.Position.toPythonString(): String? =
+    when(this) {
+        AUTO -> "best"
+        UPPER_RIGHT -> "upper right"
+        UPPER_LEFT -> "upper left"
+        LOWER_LEFT -> "lower left"
+        LOWER_RIGHT -> "lower right"
+        CENTER_LEFT -> "center left"
+        CENTER_RIGHT -> "center right"
+        CENTER_LOWER -> "lower center"
+        CENTER_UPPER -> "upper center"
+        CENTER -> "center"
+    }
