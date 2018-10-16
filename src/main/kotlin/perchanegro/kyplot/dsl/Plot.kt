@@ -71,6 +71,32 @@ inline fun Plot.Builder.spectrumPhase(
     }
 }
 
+inline fun Plot.Builder.powerSpectralDensity(
+    signal: Iterable<Number> = emptyList(),
+    samplingFrequency: Number = 1.0,
+    init: PowerSpectralDensity.Builder.()->Unit = {}
+) {
+    drawing(PowerSpectralDensity.Builder()) {
+        this.signal = signal
+        this.samplingFrequency = samplingFrequency
+        init()
+    }
+}
+
+inline fun Plot.Builder.crossSpectralDensity(
+    signal1: Iterable<Number> = emptyList(),
+    signal2: Iterable<Number> = emptyList(),
+    samplingFrequency: Number = 1.0,
+    init: CrossSpectralDensity.Builder.()->Unit = {}
+) {
+    drawing(CrossSpectralDensity.Builder()) {
+        this.signal1 = signal1
+        this.signal2 = signal2
+        this.samplingFrequency = samplingFrequency
+        init()
+    }
+}
+
 inline fun Plot.Builder.histogram(
     data: Iterable<Number> = emptyList(),
     init: Histogram.Builder.()->Unit = {}

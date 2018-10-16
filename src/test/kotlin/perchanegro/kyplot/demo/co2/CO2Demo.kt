@@ -32,7 +32,7 @@ fun main() {
     val (time, data) = loadData()
 
     val delta = (2016.753 - 1974.38) / 2211
-    val fs = 1 / delta
+    val samplingFrequency = 1 / delta
 
     showLine(
         title = "Raw data",
@@ -76,11 +76,21 @@ fun main() {
 
         title = "Data without tendency spectrum"
 
-        spectrumMagnitude(dataWithoutTendency) {
-            samplingFrequency = fs
+        spectrumMagnitude(
+            signal = dataWithoutTendency,
+            samplingFrequency = samplingFrequency
+        )
+
+        yAxis {
+            label = "Amplitude"
+            scale = Axis.Scale.LOGARITHMIC
+            limits = between(5e-6, 1e-2)
         }
 
-        yAxis.scale = Axis.Scale.LOGARITHMIC
+        xAxis {
+            label = "Frequency"
+            limits = between(0, 6)
+        }
 
     }
 
@@ -115,15 +125,31 @@ fun main() {
             color = Color.RED
         }
 
-        legend.visible = true
+        legend {
+            visible = true
+            position = Legend.Position.LOWER_LEFT
+        }
 
     }
+
+    val residue = dataWithoutTendency - cycle(time)
 
     showLine(
         title = "Residue",
         x = time,
-        y = dataWithoutTendency - cycle(time)
+        y = residue
     )
+
+    showPlot {
+
+        title = "Cross spectral density of residue"
+
+        powerSpectralDensity(
+            signal = residue,
+            samplingFrequency = samplingFrequency
+        )
+
+    }
 
     val extendedT = linearSpace(min = 1974.0, max = 2050.0, count = 1000)
     val estimate = (tendency(extendedT) + cycle(extendedT)).map { exp(it) }

@@ -53,6 +53,9 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
 
         with(plot) {
             title(title)
+
+            drawingList.forEach { buildDrawing(it) }
+
             xlabel(xAxis.label)
             ylabel(yAxis.label)
 
@@ -88,9 +91,6 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                     )
                 }
             }
-
-            drawingList.forEach { buildDrawing(it) }
-
 
             if (grid.visible) {
 
@@ -153,8 +153,22 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                 phase_spectrum(
                     drawing.signal,
                     "label" setTo drawing.label,
-                    "Fs" setTo drawing.samplingFrequency,
-                    "label" setTo drawing.label
+                    "Fs" setTo drawing.samplingFrequency
+                )
+            }
+            is PowerSpectralDensity -> {
+                psd(
+                    drawing.signal,
+                    "label" setTo drawing.label,
+                    "Fs" setTo drawing.samplingFrequency
+                )
+            }
+            is CrossSpectralDensity -> {
+                csd(
+                    drawing.signal1,
+                    drawing.signal2,
+                    "label" setTo drawing.label,
+                    "Fs" setTo drawing.samplingFrequency
                 )
             }
             is Scatter -> {
