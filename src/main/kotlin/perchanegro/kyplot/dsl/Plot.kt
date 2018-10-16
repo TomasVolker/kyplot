@@ -104,6 +104,12 @@ inline fun Plot.Builder.bar(
     }
 }
 
+inline fun showPlot(title: String = "", init: Plot.Builder.()->Unit) {
+    showFigure {
+        plot(title, init)
+    }
+}
+
 inline fun Plot.Builder.stem(
     x: Iterable<Number> = emptyList(),
     y: Iterable<Number> = emptyList(),
@@ -113,11 +119,5 @@ inline fun Plot.Builder.stem(
         this.x = x
         this.y = y
         init()
-    }
-}
-
-inline fun showPlot(init: Plot.Builder.()->Unit) {
-    showFigure {
-        plot(init = init)
     }
 }

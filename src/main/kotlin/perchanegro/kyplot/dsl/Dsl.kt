@@ -7,9 +7,10 @@ import perchanegro.kyplot.model.drawing.Stem
 
 inline fun showHistogram(
     data: Iterable<Number> = emptyList(),
+    title: String = "",
     init: Histogram.Builder.()->Unit = {}
 ) {
-    showPlot {
+    showPlot(title) {
         histogram(
             data = data,
             init = init
@@ -21,9 +22,10 @@ inline fun showHistogram(
 inline fun showLine(
     x: Iterable<Number> = emptyList(),
     y: Iterable<Number> = emptyList(),
+    title: String = "",
     init: Line.Builder.()->Unit = {}
 ) {
-    showPlot {
+    showPlot(title) {
         line(
             x = x,
             y = y,
@@ -35,9 +37,10 @@ inline fun showLine(
 inline fun showScatter(
     x: Iterable<Number> = emptyList(),
     y: Iterable<Number> = emptyList(),
+    title: String = "",
     init: Scatter.Builder.()->Unit = {}
 ) {
-    showPlot {
+    showPlot(title) {
         scatter(
             x = x,
             y = y,
