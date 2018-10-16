@@ -106,3 +106,15 @@ inline fun showPlot(title: String = "", init: Plot.Builder.()->Unit) {
         plot(title, init)
     }
 }
+
+inline fun Plot.Builder.stem(
+    x: Iterable<Number> = emptyList(),
+    y: Iterable<Number> = emptyList(),
+    init: Stem.Builder.()->Unit = {}
+) {
+    drawing(Stem.Builder()) {
+        this.x = x
+        this.y = y
+        init()
+    }
+}
