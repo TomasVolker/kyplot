@@ -1,7 +1,6 @@
 package perchanegro.kyplot.plotter
 
 import aliceinnets.python.Parser
-import aliceinnets.python.PythonCode
 import aliceinnets.python.PythonScriptUtil
 import perchanegro.kyplot.model.*
 import aliceinnets.python.jyplot.JyPlot
@@ -168,6 +167,15 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                     "color" setTo (drawing.color.toPythonColor() ?: Color.BLUE.toPythonColor())
                 )
             }
+            is Stem -> {
+                stem(
+                    drawing.x,
+                    drawing.y,
+                    "linefmt" setTo (drawing.lineStyle.color.toPythonString() + drawing.lineStyle.type.toPythonText()),
+                    "markerfmt" setTo ((drawing.markerStyle.type.toPythonText() ?: ".") +
+                            drawing.markerStyle.color.toPythonString())
+                )
+            }
         }
     }
 
@@ -181,7 +189,7 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
 
 fun Color.toPythonColor(): List<Number>? = when(this) {
     is Color.Auto -> null
-    is Color.Explicit -> listOf(red, green, blue)
+    is Color.Explicit -> listOf(red.apply {  }, green, blue)
 }
 
 fun LineType.toPythonText(): String = when(this) {
@@ -231,3 +239,17 @@ fun BarAlignment.toPythonText(): String = when(this) {
     BarAlignment.CENTER -> "center"
     BarAlignment.EDGE -> "edge"
 }
+
+fun Color.toPythonString(): String? =
+    when(this) {
+        Color.BLUE -> "b"
+        Color.GREEN -> "g"
+        Color.RED -> "r"
+        Color.CYAN -> "c"
+        Color.MAGENTA -> "m"
+        Color.YELLOW -> "y"
+        Color.BLACK -> "k"
+        Color.Auto -> ""
+        else -> null
+    }
+

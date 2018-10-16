@@ -104,6 +104,18 @@ inline fun Plot.Builder.bar(
     }
 }
 
+inline fun Plot.Builder.stem(
+    x: Iterable<Number> = emptyList(),
+    y: Iterable<Number> = emptyList(),
+    init: Stem.Builder.()->Unit = {}
+) {
+    drawing(Stem.Builder()) {
+        this.x = x
+        this.y = y
+        init()
+    }
+}
+
 inline fun showPlot(init: Plot.Builder.()->Unit) {
     showFigure {
         plot(init = init)

@@ -3,6 +3,7 @@ package perchanegro.kyplot.dsl
 import perchanegro.kyplot.model.drawing.Histogram
 import perchanegro.kyplot.model.drawing.Line
 import perchanegro.kyplot.model.drawing.Scatter
+import perchanegro.kyplot.model.drawing.Stem
 
 inline fun showHistogram(
     data: Iterable<Number> = emptyList(),
@@ -45,4 +46,16 @@ inline fun showScatter(
     }
 }
 
-
+inline fun showStem(
+    x: Iterable<Number> = emptyList(),
+    y: Iterable<Number> = emptyList(),
+    init: Stem.Builder.()->Unit = {}
+) {
+    showPlot {
+        stem(
+            x = x,
+            y = y,
+            init = init
+        )
+    }
+}
