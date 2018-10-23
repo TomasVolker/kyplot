@@ -10,24 +10,24 @@ version = "0.1"
 
 repositories {
 
-    maven { setUrl("http://dl.bintray.com/kotlin/kotlin-eap") }
-    maven { setUrl("https://raw.github.com/aliceinnets/maven-repository/master/") }
     mavenCentral()
-
-    maven { setUrl("http://dl.bintray.com/kyonifer/maven") }
     jcenter()
+
+    maven { url = uri("http://dl.bintray.com/kotlin/kotlin-eap") }
+
+    maven { url = uri("http://dl.bintray.com/kyonifer/maven") }
 
 }
 
 dependencies {
 
-    compile(kotlin("stdlib-jdk8"))
-    testCompile("junit", "junit", "4.12")
+    implementation(kotlin("stdlib-jdk8"))
+    testImplementation("junit", "junit", "4.12")
 
-    compile(group = "aliceinnets", name = "java-jyplot", version = "1.3.0", configuration = "sources")
-    compile(group = "aliceinnets", name = "java-jyplot", version = "1.3.0", configuration = "javadoc")
+    testImplementation(group = "com.kyonifer", name = "koma-core-ejml", version = "0.12")
 
-    testCompile(group = "com.kyonifer", name = "koma-core-ejml", version = "0.12")
+    implementation(files("libs/kyscript-0.1.jar"))
+    implementation(files("libs/kyscript-0.1-sources.jar"))
 
 }
 

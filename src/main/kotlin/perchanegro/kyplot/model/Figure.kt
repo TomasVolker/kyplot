@@ -1,6 +1,7 @@
 package perchanegro.kyplot.model
 
 import perchanegro.kyplot.plotter.KyPlot
+import tomasvolker.kyscript.readKyScript
 
 @DslMarker
 annotation class PlotDsl
@@ -19,5 +20,9 @@ data class Figure(
 }
 
 fun Figure.show() {
-    KyPlot().show(this)
+    readKyScript(
+        KyPlot().also {
+            it.show(this)
+        }.build()
+    )
 }

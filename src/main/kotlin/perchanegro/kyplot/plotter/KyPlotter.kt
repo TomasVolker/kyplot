@@ -1,39 +1,38 @@
 package perchanegro.kyplot.plotter
 
-import aliceinnets.python.Parser
-import aliceinnets.python.PythonScriptUtil
 import perchanegro.kyplot.model.*
-import aliceinnets.python.jyplot.JyPlot
 import perchanegro.kyplot.model.drawing.*
 import perchanegro.kyplot.model.LineType.*
 import perchanegro.kyplot.model.MarkerType.*
 import perchanegro.kyplot.model.MarkerFillStyle.*
 import perchanegro.kyplot.model.Legend.Position.*
+import tomasvolker.kyscript.KyScriptWriter
 
-object KyPlotConfig {
+class KyPlot: KyScriptWriter() {
 
-    var pythonPath: String
-        get() = PythonScriptUtil.getPythonPath()
-        set(value) = PythonScriptUtil.setPythonPath(value)
+    val plt = id("plt")
 
-}
-
-class KyPlot(pathname: String = ""): JyPlot(pathname) {
+    val figure   = plt.id("figure")
+    val suptitle = plt.id("suptitle")
+    val subplot  = plt.id("subplot")
+    val show     = plt.id("show")
 
     init {
-        fromImports("matplotlib", "cm")
+        importAs("numpy", "np")
+        importAs("matplotlib.pyplot", "plt")
+        fromImport("matplotlib", "cm")
     }
 
     fun show(figure: Figure) {
 
-        figure()
-        suptitle(figure.title)
+        +figure()
+        +suptitle(figure.title)
 
         for (plot in figure.plotList) {
 
             with(plot.position) {
 
-                subplot(
+                +subplot(
                     rowCount,
                     columnCount,
                     1 + column + row * columnCount
@@ -44,39 +43,38 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             buildPlot(plot)
         }
 
-        show()
-        exec()
+        +show()
 
     }
 
     private fun buildPlot(plot: Plot) {
 
         with(plot) {
-            title(title)
+            +plt.id("title")(title)
 
             drawingList.forEach { buildDrawing(it) }
 
-            xlabel(xAxis.label)
-            ylabel(yAxis.label)
+            +plt.id("xlabel")(xAxis.label)
+            +plt.id("ylabel")(yAxis.label)
 
-            xscale(xAxis.scale.toPythonText())
-            yscale(yAxis.scale.toPythonText())
+            +plt.id("xscale")(xAxis.scale.toPythonText())
+            +plt.id("yscale")(yAxis.scale.toPythonText())
 
             when(xAxis.limits) {
                 is Axis.Limits.Explicit -> {
-                    xlim(xAxis.limits.min, xAxis.limits.max)
+                    +plt.id("xlim")(xAxis.limits.min, xAxis.limits.max)
                 }
             }
 
             when(yAxis.limits) {
                 is Axis.Limits.Explicit -> {
-                    ylim(yAxis.limits.min, yAxis.limits.max)
+                    +plt.id("ylim")(yAxis.limits.min, yAxis.limits.max)
                 }
             }
 
             when(xAxis.tickPositions) {
                 is Axis.TickPositions.Explicit -> {
-                    xticks(
+                    +plt.id("xticks")(
                         xAxis.tickPositions.tickList.map { it.position },
                         xAxis.tickPositions.tickList.map { it.label.toPythonExpression() }
                     )
@@ -85,7 +83,7 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
 
             when(yAxis.tickPositions) {
                 is Axis.TickPositions.Explicit -> {
-                    yticks(
+                    +plt.id("yticks")(
                         yAxis.tickPositions.tickList.map { it.position },
                         yAxis.tickPositions.tickList.map { it.label.toPythonExpression() }
                     )
@@ -94,14 +92,14 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
 
             if (grid.visible) {
 
-                grid(
+                +plt.id("grid")(
                     "linestyle" setTo grid.lineStyle.type.toPythonText(),
                     "linewidth" setTo grid.lineStyle.width,
                     "alpha" setTo grid.lineStyle.alpha
                 )
 
                 if (grid.lineStyle.color !is Color.Auto) {
-                    grid(
+                    +plt.id("grid")(
                         "color" setTo grid.lineStyle.color.toPythonColor()
                     )
                 }
@@ -109,72 +107,84 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             }
 
             if (legend.visible) {
-                legend("loc" setTo legend.position.toPythonString())
+                +plt.id("legend")("loc" setTo legend.position.toPythonString())
             }
 
         }
 
     }
 
+    fun plt(functionName: String, args: List<Any?>, kwargs: Map<String, Any?>) {
+        +plt.id(functionName)(
+            args.toPythonExpression().let { inject("*$it") },
+            kwargs.toPythonExpression().let { inject("**$it") }
+        )
+    }
+
+
     private fun buildDrawing(drawing: Drawing) {
         when(drawing) {
             is Line -> {
-                plot(
-                    drawing.x.toPythonExpression(),
-                    drawing.y.toPythonExpression(),
-                    "label" setTo drawing.label,
-                    "linewidth" setTo drawing.lineStyle.width,
-                    "lineStyle" setTo drawing.lineStyle.type.toPythonText(),
-                    "color" setTo drawing.lineStyle.color.toPythonColor(),
-                    "alpha" setTo drawing.lineStyle.alpha,
-                    "marker" setTo drawing.markerStyle.type.toPythonText(),
-                    "markersize" setTo drawing.markerStyle.size,
-                    "zorder" setTo 3
+                plt("plot",
+                    listOf(drawing.x, drawing.y),
+                    mapOf(
+                        "label"      to drawing.label,
+                        "linewidth"  to drawing.lineStyle.width,
+                        "lineStyle"  to drawing.lineStyle.type.toPythonText(),
+                        "color"      to drawing.lineStyle.color.toPythonColor(),
+                        "alpha"      to drawing.lineStyle.alpha,
+                        "marker"     to drawing.markerStyle.type.toPythonText(),
+                        "markersize" to drawing.markerStyle.size,
+                        "zorder"     to 3
+                    )
                 )
             }
             is Histogram -> {
-                hist(
-                    drawing.data.toPythonExpression(),
-                    drawing.bins.toPythonExpression(),
-                    "label" setTo drawing.label,
-                    "density" setTo drawing.normalized,
-                    "zorder" setTo 3,
-                    "color" setTo drawing.color.toPythonColor()
+                plt("hist",
+                    listOf(),
+                    mapOf(
+                        "x"       to drawing.data,
+                        "bins"    to drawing.bins,
+                        "label"   to drawing.label,
+                        "density" to drawing.normalized,
+                        "zorder"  to 3,
+                        "color"   to drawing.color.toPythonColor()
+                    )
                 )
             }
             is SpectrumMagnitude -> {
-                magnitude_spectrum(
-                    drawing.signal.toPythonExpression(),
+                +plt.id("magnitude_spectrum")(
+                    drawing.signal,
                     "label" setTo drawing.label,
                     "Fs" setTo drawing.samplingFrequency
                 )
             }
             is SpectrumPhase -> {
-                phase_spectrum(
-                    drawing.signal.toPythonExpression(),
+                +plt.id("phase_spectrum")(
+                    drawing.signal,
                     "label" setTo drawing.label,
                     "Fs" setTo drawing.samplingFrequency
                 )
             }
             is PowerSpectralDensity -> {
-                psd(
-                    drawing.signal.toPythonExpression(),
+                +plt.id("psd")(
+                    drawing.signal,
                     "label" setTo drawing.label,
                     "Fs" setTo drawing.samplingFrequency
                 )
             }
             is CrossSpectralDensity -> {
-                csd(
-                    drawing.signal1.toPythonExpression(),
-                    drawing.signal2.toPythonExpression(),
+                +plt.id("csd")(
+                    drawing.signal1,
+                    drawing.signal2,
                     "label" setTo drawing.label,
                     "Fs" setTo drawing.samplingFrequency
                 )
             }
             is Scatter -> {
-                scatter(
-                    drawing.x.toPythonExpression(),
-                    drawing.y.toPythonExpression(),
+                +plt.id("scatter")(
+                    drawing.x,
+                    drawing.y,
                     "marker" setTo drawing.markerStyle.type.toPythonText(),
                     "label" setTo drawing.label,
                     "alpha" setTo drawing.markerStyle.alpha,
@@ -183,9 +193,9 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                 )
             }
             is Bar -> {
-                bar(
-                    drawing.x.toPythonExpression(),
-                    drawing.heights,
+                +plt.id("bar")(
+                    "x" setTo drawing.x,
+                    "heights" setTo drawing.heights,
                     "label" setTo drawing.label,
                     "align" setTo drawing.alignment.toPythonText(),
                     "width" setTo drawing.width,
@@ -193,7 +203,7 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
                 )
             }
             is Stem -> {
-                stem(
+                +plt.id("stem")(
                     drawing.x,
                     drawing.y,
                     "label" setTo drawing.label,
@@ -204,24 +214,6 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             }
         }
     }
-
-    private infix fun String.setTo(value: Any?) =
-            "$this=${value.toPythonExpression()}"
-
-    private fun Any?.toPythonExpression(): String = when(this) {
-        is List<*> -> this.joinToString(
-            separator = ", ",
-            prefix = "[",
-            postfix = "]"
-        ) { it.toPythonExpression() }
-        is Set<*> -> this.joinToString(
-            separator = ", ",
-            prefix = "{",
-            postfix = "}"
-        ) { it.toPythonExpression() }
-        else -> Parser.toPythonExpression(this)
-    }
-
 
 }
 
