@@ -120,8 +120,8 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
         when(drawing) {
             is Line -> {
                 plot(
-                    drawing.x,
-                    drawing.y,
+                    drawing.x.toPythonExpression(),
+                    drawing.y.toPythonExpression(),
                     "label" setTo drawing.label,
                     "linewidth" setTo drawing.lineStyle.width,
                     "lineStyle" setTo drawing.lineStyle.type.toPythonText(),
@@ -134,8 +134,8 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             }
             is Histogram -> {
                 hist(
-                    drawing.data,
-                    drawing.bins,
+                    drawing.data.toPythonExpression(),
+                    drawing.bins.toPythonExpression(),
                     "label" setTo drawing.label,
                     "density" setTo drawing.normalized,
                     "zorder" setTo 3,
@@ -144,37 +144,37 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             }
             is SpectrumMagnitude -> {
                 magnitude_spectrum(
-                    drawing.signal,
+                    drawing.signal.toPythonExpression(),
                     "label" setTo drawing.label,
                     "Fs" setTo drawing.samplingFrequency
                 )
             }
             is SpectrumPhase -> {
                 phase_spectrum(
-                    drawing.signal,
+                    drawing.signal.toPythonExpression(),
                     "label" setTo drawing.label,
                     "Fs" setTo drawing.samplingFrequency
                 )
             }
             is PowerSpectralDensity -> {
                 psd(
-                    drawing.signal,
+                    drawing.signal.toPythonExpression(),
                     "label" setTo drawing.label,
                     "Fs" setTo drawing.samplingFrequency
                 )
             }
             is CrossSpectralDensity -> {
                 csd(
-                    drawing.signal1,
-                    drawing.signal2,
+                    drawing.signal1.toPythonExpression(),
+                    drawing.signal2.toPythonExpression(),
                     "label" setTo drawing.label,
                     "Fs" setTo drawing.samplingFrequency
                 )
             }
             is Scatter -> {
                 scatter(
-                    drawing.x,
-                    drawing.y,
+                    drawing.x.toPythonExpression(),
+                    drawing.y.toPythonExpression(),
                     "marker" setTo drawing.markerStyle.type.toPythonText(),
                     "label" setTo drawing.label,
                     "alpha" setTo drawing.markerStyle.alpha,
@@ -184,7 +184,7 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
             }
             is Bar -> {
                 bar(
-                    drawing.x,
+                    drawing.x.toPythonExpression(),
                     drawing.heights,
                     "label" setTo drawing.label,
                     "align" setTo drawing.alignment.toPythonText(),
@@ -208,8 +208,20 @@ class KyPlot(pathname: String = ""): JyPlot(pathname) {
     private infix fun String.setTo(value: Any?) =
             "$this=${value.toPythonExpression()}"
 
-    private fun Any?.toPythonExpression(): String =
-        Parser.toPythonExpression(this)
+    private fun Any?.toPythonExpression(): String = when(this) {
+        is List<*> -> this.joinToString(
+            separator = ", ",
+            prefix = "[",
+            postfix = "]"
+        ) { it.toPythonExpression() }
+        is Set<*> -> this.joinToString(
+            separator = ", ",
+            prefix = "{",
+            postfix = "}"
+        ) { it.toPythonExpression() }
+        else -> Parser.toPythonExpression(this)
+    }
+
 
 }
 
