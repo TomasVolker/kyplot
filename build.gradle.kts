@@ -25,7 +25,5 @@ dependencies {
 
     implementation(group = "tomasvolker", name = "numeriko-core", version = "0.0.3")
     implementation(group = "com.github.tomasvolker", name = "kyscript", version = "0.1.0")
-
-    testImplementation(group = "com.kyonifer", name = "koma-core-ejml", version = "0.12")
-
+    
 }
